@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🖥️ ICT Service Desk Knowledge Base
+# 🖥️ ICT Service Desk Knowledge Base (Deutsch)
 
 **Persönliche Wissensdatenbank für den Aufbau von IT-Support-Know-how**
 
