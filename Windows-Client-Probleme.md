@@ -31,7 +31,9 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
 **Symptom:** Anwendungen starten träge, System reagiert verzögert, Lüfter läuft dauerhaft hoch.
 
 **Ursachenanalyse:**
-- Task-Manager (`Strg+Umschalt+Esc`) öffnen → Reiter „Prozesse" nach CPU/RAM/Datenträger sortieren
+
+- Zuerst den Task-Manager mit Strg + Umschalt + Esc öffnen und die Prozesse nach CPU, Arbeitsspeicher und Datenträger sortieren.
+(`Strg+Umschalt+Esc`)
 - Prüfen, ob ein einzelner Prozess dauerhaft hohe Auslastung verursacht (z. B. `svchost.exe`, Windows Search, Virenscanner, Browser mit vielen Tabs)
 - Autostart-Programme prüfen (`Task-Manager → Autostart`)
 - Datenträgerauslastung prüfen – bei 100 % Disk-Auslastung oft Hinweis auf fehlerhafte HDD/SSD oder Windows Update im Hintergrund
@@ -44,6 +46,10 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
 4. Bei Verdacht auf Malware: vollständigen Virenscan durchführen
 5. Windows Search Index neu aufbauen, falls `SearchIndexer.exe` dauerhaft hohe Last verursacht
 6. Treiber (v. a. Chipsatz, SSD-Controller) auf Aktualität prüfen
+
+**Praxishinweis**
+
+Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufigsten Ursachen für hohe CPU- oder RAM-Auslastung. Deshalb diese Punkte zuerst prüfen.
 
 **Eskalationskriterien:**
 - Auslastung bleibt nach allen Massnahmen dauerhaft > 90 %
@@ -81,11 +87,18 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
 | `UNEXPECTED_KERNEL_MODE_TRAP` | Defekte Hardware, häufig RAM oder CPU |
 
 **Lösungsschritte:**
-1. Windows-Speicherdiagnose ausführen: `mdsched.exe`
-2. Neueste Gerätetreiber prüfen, insbesondere Grafik-, Chipsatz- und Netzwerktreiber
-3. Kürzlich installierte Updates oder Software identifizieren und ggf. deinstallieren
-4. Systemwiederherstellung auf einen früheren Zeitpunkt durchführen, falls verfügbar
-5. Bei Verdacht auf Hardwaredefekt: RAM einzeln testen, Temperaturen prüfen
+
+(1st Level)
+
+1. Windows-Speicherdiagnose ausführen: mdsched.exe
+2. Gerätetreiber prüfen, insbesondere Grafik-, Chipsatz- und Netzwerktreiber.
+3. Kürzlich installierte Updates oder Software prüfen und bei zeitlichem Zusammenhang testweise deinstallieren.
+
+(2nd Level)
+
+4. Systemwiederherstellung durchführen.
+5. RAM einzeln testen.
+6 .Temperaturen und Hardwarezustand prüfen.
 
 **Eskalationskriterien:**
 - Bluescreens treten wiederholt trotz Treiber-/Update-Bereinigung auf
@@ -99,7 +112,7 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
 
 **Priorität:** P1
 
-**Symptom:** System bleibt beim Logo hängen, zeigt „Kein Startgerät gefunden" oder landet in einer Wiederherstellungsschleife.
+**Symptom:** Der PC startet nicht korrekt. Häufig bleibt er beim Herstellerlogo hängen, meldet „Kein Startgerät gefunden“ oder startet immer wieder in die Wiederherstellung.
 
 **Ursachenanalyse:**
 - Fehlermeldung genau notieren
@@ -119,13 +132,14 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
    sfc /scannow
    chkdsk C: /f /r
    ```
-4. Falls kein Zugriff auf WinRE möglich: Installationsmedium verwenden und Reparaturinstallation starten
-5. Als letzter Schritt: Datensicherung (falls möglich) und Neuinstallation
+4. WinRE nicht erreichbar?: Mit einem Windows-Installationsmedium starten und die Reparaturoptionen verwenden.
+5. Wenn keine Reparatur möglich ist: Daten sichern (falls erreichbar) und Neuinstallation vorbereiten.
 
-**Hinweis zu BitLocker:** Ist das Laufwerk verschlüsselt, wird beim Zugriff über WinRE oder Installationsmedium meist der Recovery Key abgefragt. Bevor eskaliert wird, immer zuerst prüfen:
-- Azure AD / Entra ID: Gerätedetails → BitLocker-Wiederherstellungsschlüssel
-- Intune: Geräte → betroffenes Gerät → Wiederherstellungsschlüssel
-- Alternativ: verknüpftes Microsoft-Konto des Nutzers (`account.microsoft.com/devices/recoverykey`)
+**Hinweis zu BitLocker:** Ist das Laufwerk verschlüsselt, wird häufig der BitLocker-Recovery-Key benötigt. Vor einer Eskalation zuerst prüfen:
+
+- Entra ID / Azure AD: Gerät → BitLocker-Wiederherstellungsschlüssel
+- Intune: Gerät → Wiederherstellungsschlüssel
+- Microsoft-Konto des Benutzers: https://account.microsoft.com/devices/recoverykey (`account.microsoft.com/devices/recoverykey`)
 
 **Eskalationskriterien:**
 - Datenträger wird im BIOS gar nicht erkannt → Hardwaredefekt, Datenrettung ggf. nötig
@@ -218,19 +232,21 @@ Sammlung der häufigsten Windows-Client-Probleme im Support-Alltag: langsame Sys
 
 **Priorität:** P2
 
-**Symptom:** Bildschirm bleibt nach dem Einschalten oder nach einem Update schwarz (mit oder ohne Mauszeiger), Anzeige flackert, oder externe Monitore werden nicht erkannt. Zu unterscheiden von Boot-Problemen (Abschnitt 3): Das System läuft im Hintergrund, nur die Anzeige funktioniert nicht.
+**Symptom:** Der Bildschirm bleibt nach dem Einschalten oder nach einem Update schwarz. Teilweise ist noch ein Mauszeiger sichtbar, die Anzeige flackert oder ein externer Monitor wird nicht erkannt. Wichtig: Das Gerät kann im Hintergrund weiterlaufen. Dadurch unterscheidet sich dieses Problem von einem echten Boot-Problem.
 
 **Ursachenanalyse:**
-- Prüfen, ob das System reagiert (Caps-Lock-LED, Netzwerkping, Lüftergeräusch) – Hinweis auf reines Anzeigeproblem statt Systemabsturz
+- Reagiert der PC noch? Caps-Lock-LED, Lüftergeräusch oder Netzwerkverbindung prüfen.
 - Prüfen, ob das Problem nach einem Windows- oder Grafiktreiber-Update aufgetreten ist
-- Kabel-/Anschlussverbindung und ggf. zweiten Monitor testen, um Hardware auszuschliessen
+- Monitor, Kabel und Anschluss kontrollieren und falls möglich zweiten Monitor testen, um Hardware auszuschliessen
 
 **Lösungsschritte:**
-1. Tastenkombination `Windows-Taste + Strg + Umschalt + B` versuchen (setzt Grafiktreiber zurück, oft sofortige Lösung)
-2. Per Remote-Verbindung oder Neustart prüfen, ob das Problem nach Neustart weiterhin besteht
-3. Im abgesicherten Modus starten und Grafiktreiber deinstallieren/zurücksetzen
-4. Grafiktreiber über Hersteller-Website (nicht nur Windows Update) neu installieren
-5. Kabel, Anschluss und ggf. Monitor selbst durch Austausch testen
+
+1. Tastenkombination Windows `Windows-Taste + Strg + Umschalt + B` drücken. Dadurch wird der Grafiktreiber neu initialisiert.
+2. Gerät neu starten und prüfen, ob die Anzeige wieder erscheint.
+3. Falls Remote-Zugriff möglich ist, prüfen, ob Windows im Hintergrund normal läuft.
+4. Im abgesicherten Modus starten und den Grafiktreiber zurücksetzen oder deinstallieren.
+5. Grafiktreiber direkt vom Hersteller (Intel, AMD oder NVIDIA) neu installieren.
+6. Monitor und Kabel testweise austauschen.
 
 **Eskalationskriterien:**
 - Problem besteht auch im abgesicherten Modus → Hinweis auf Hardwaredefekt (Grafikkarte/Display)
@@ -253,6 +269,7 @@ Für die meisten der oben genannten Probleme kann die Erstdiagnose remote erfolg
 **Faustregel:** Bei P1-Fällen ohne Netzwerkverbindung (z. B. Boot-Probleme) sofort Vor-Ort-Support statt Remote-Diagnose einplanen, um Zeit zu sparen.
 
 ---
+
 
 ## Verwandte Themen
 - [Drucker-und-Peripherie.md](./Drucker-und-Peripherie.md)
