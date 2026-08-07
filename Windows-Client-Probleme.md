@@ -119,6 +119,9 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 - Prüfen, ob es sich um ein Software- (Bootloader, Systemdateien) oder Hardwareproblem (Datenträger, Kabel, BIOS-Einstellung) handelt
 - Bootreihenfolge im BIOS/UEFI prüfen
 
+**Erfahrungsbericht:**
+Bei Boot-Problemen lohnt es sich, am Telefon einfach mal offen zu fragen: "Was ist zuletzt passiert, bevor das Gerät so reagiert hat?" Man hört dann öfter Sachen wie "ist mir runtergefallen" oder "hat komisch geklickt, bevor der Bildschirm schwarz wurde" – und dann weiss man eigentlich schon, dass es wahrscheinlich Richtung Hardware geht, bevor man überhaupt mit bootrec anfängt. Umgekehrt: Kam kurz vorher ein Update oder ein Stromausfall, ist die Chance ziemlich gut, dass es mit den Standardschritten unten gelöst werden kann. Diese eine Frage am Anfang spart oft eine halbe Stunde Herumprobieren.
+
 **Lösungsschritte:**
 1. Automatische Reparatur über Windows-Wiederherstellungsumgebung (WinRE) ausführen
 2. Kommandozeile in WinRE öffnen und prüfen:
@@ -145,7 +148,7 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 - Datenträger wird im BIOS gar nicht erkannt → Hardwaredefekt, Datenrettung ggf. nötig
 - Wiederherstellungsversuche schlagen wiederholt fehl
 - Verschlüsselung (BitLocker) verhindert Zugriff und Recovery Key ist nicht auffindbar
-- **Eskalation an:** 2nd-Level-Support (sofort bei Produktivsystemen), Hardware-Team bei Datenträgerdefekt, Security-Team falls Recovery Key nicht auffindbar
+- **Eskalation an:** 2nd-Level-Support (sofort bei Produktivsystemen), Hardware-Team bei Datenträger defekt, Security-Team falls Recovery Key nicht auffindbar
 
 ---
 
@@ -165,7 +168,7 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 1. Anwendung über Task-Manager beenden und neu starten
 2. Anwendung auf aktuelle Version prüfen / aktualisieren
 3. Programmcache/-konfiguration zurücksetzen (anwendungsspezifisch, z. B. Outlook-Profil neu anlegen)
-4. Kompatibilitätsmodus testen, falls ältere Software auf neuem Windows läuft
+4. Kompatibilitätsmodus testen, falls ältere software auf neuem Windows läuft
 5. Anwendung deinstallieren und sauber neu installieren
 
 **Eskalationskriterien:**
@@ -183,21 +186,21 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 
 **Ursachenanalyse:**
 - Ereignisanzeige → `Windows-Protokolle → Anwendung` nach Einträgen mit Quelle „User Profile Service" durchsuchen
-- Prüfen, ob es sich um ein lokales Profil oder ein servergespeichertes/roaming Profil handelt
+- Prüfen, ob es sich um ein lokales Profil oder ein servergespeichertes/ roaming Profil handelt
 - Prüfen, ob das Problem nur bei einem Nutzenden oder bei mehreren auftritt (Hinweis auf zentrales Problem, z. B. Fileserver/GPO)
 - Registry prüfen: `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList` auf doppelte oder mit `.bak` markierte Profil-Einträge
 
 **Lösungsschritte:**
-1. Neustart und erneuter Anmeldeversuch (schliesst Netzwerk-/Timing-Probleme aus)
+1. Neustart und erneuter Anmeldeversuch. (schliesst Netzwerk-/Timing-Probleme aus)
 2. Bei „Temporäres Profil": Registry-Einträge unter `ProfileList` auf fehlerhafte SID-Einträge (`.bak`) prüfen und bereinigen, danach Neustart
-3. Netzwerkverbindung zum Domain Controller bzw. Profil-Server prüfen (bei Roaming-Profilen)
-4. Lokales Profil-Backup erstellen (Dokumente, Desktop, Browserdaten sichern), danach beschädigtes Profil löschen und bei nächster Anmeldung neu erstellen lassen
+3. Bei Roaming-Profilen: Netzwerkverbindung zum Domain Controller bzw. Profil-Server kontrollieren
+4. Lokales Profil-Backup erstellen (Dokumente, Desktop,Browserdaten), beschädigtes Profil löschen und bei nächster Anmeldung neu erstellen lassen.
 5. Bei Domänenproblemen: Vertrauensstellung zur Domäne prüfen (`Test-ComputerSecureChannel` in PowerShell), ggf. Client neu der Domäne beitreten lassen
 
 **Eskalationskriterien:**
 - Problem betrifft mehrere Nutzende gleichzeitig → Hinweis auf Server-/Infrastrukturproblem
 - Roaming-Profil lässt sich nicht synchronisieren trotz funktionierender Netzwerkverbindung
-- Vertrauensstellung zur Domäne wiederholt gestört
+- Vertrauenssstellung zur Domäne wiederholt gestört
 - **Eskalation an:** AD/Identity-Team bei Domänen-/Vertrauensstellungsproblemen, Server-Team bei Roaming-Profil-/Fileserver-Problemen
 
 ---
@@ -206,7 +209,7 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 
 **Priorität:** P3
 
-**Symptom:** Updates bleiben bei einem bestimmten Prozentsatz hängen, schlagen mit Fehlercode fehl (z. B. `0x800f0922`, `0x80070002`, `0x8024402f`) oder werden endlos wiederholt.
+**Symptom:** Updates bleiben bei einem bestimmten Prozentsatz hängen, schlagen mit Fehlercode fehl (z. B. `0x800f0922`, `0x80070002`, `0x8024402f`) oder wiedreholen sich endlos, ohne je durchzulaufen.
 
 **Ursachenanalyse:**
 - Windows-Update-Verlauf prüfen: `Einstellungen → Windows Update → Updateverlauf`
@@ -222,8 +225,8 @@ Im Service Desk sind Browser mit vielen Tabs und Sicherheitssoftware die häufig
 5. Update manuell über den Microsoft Update Catalog herunterladen und installieren (falls automatischer Weg wiederholt scheitert)
 
 **Eskalationskriterien:**
-- Fehler tritt bei mehreren Geräten gleichzeitig auf → Hinweis auf WSUS-/Intune-Konfigurationsproblem
-- Update lässt sich auch nach Cache-Reset und DISM/SFC nicht installieren
+- Der Fehler tritt bei mehreren Geräten gleichzeitig auf → spricht für ein WSUS-/Intune-Konfigurationsproblem, nicht für einen Einzelfall
+- Update läst sich auch nach Cache-Reset und DISM/SFC nicht installieren
 - **Eskalation an:** Client-Management-Team (WSUS/Intune) bei Massenproblemen
 
 ---
