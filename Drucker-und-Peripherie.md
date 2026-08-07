@@ -140,6 +140,127 @@ Sammlung der häufigsten Probleme im Support-Alltag rund um Drucker, Scanner und
 **Eskalation an:** Hardware-Team bzw. Vertragspartner für Geräteservice (bei Leasing-/Wartungsvertrag)
 
 ---
+## 5. Papierstau / Papiereinzugsprobleme
+
+**Priorität:** P4
+
+**Symptom:** Drucker meldet wiederholt Papierstau, auch nachdem gestautes Papier entfernt wurde, oder zieht mehrere Blätter gleichzeitig bzw. gar kein Papier ein.
+
+**Erfahrungsbericht:** Gerade bei älteren Geräten lohnt sich der Hinweis an die Nutzenden, das Papier vor dem Einlegen kurz aufzufächern – klingt banal, löst aber überraschend viele „zieht mehrere Blätter gleichzeitig ein"-Tickets, vor allem wenn frisches Papier direkt aus einer neu geöffneten Packung kommt und die Blätter noch aneinanderhaften.
+
+**Ursachenanalyse:**
+- Alle Papierfächer und den Ausgabebereich auf Papierreste kontrollieren, auch an Stellen, die auf den ersten Blick leer wirken
+- Papierqualität und -zustand prüfen (feucht, gewellt, falsches Format eingelegt)
+- Prüfen, ob der Fehler immer an der gleichen Stelle im Gerät auftritt (Hinweis auf verschlissene Einzugsrollen)
+
+**Lösungsschritte:**
+1. Gerät ausschalten und alle Fächer sowie den Ausgabebereich sorgfältig auf Papierreste prüfen.
+2. Papier vor dem Einlegen auffächern und auf korrektes Format/Ausrichtung im Fach achten.
+3. Einzugsrollen auf Verschleiss oder Verschmutzung prüfen, bei Bedarf mit einem leicht feuchten Tuch reinigen.
+4. Gerät neu starten und Testdruck durchführen.
+
+**Eskalationskriterien:**
+- Papierstau tritt wiederholt an derselben Stelle im Gerät auf, auch nach Reinigung
+- Einzugsrollen sind sichtbar verschlissen
+
+**Eskalation an:** Hardware-Team bzw. Vertragspartner für Geräteservice
+
+---
+
+## 6. Scan-Probleme (Scan-to-Email / Scan-to-Folder)
+
+**Priorität:** P3
+
+**Symptom:** Das Scannen selbst funktioniert, aber der Versand per E-Mail oder die Ablage in einem Netzwerkordner schlägt fehl, bricht ab oder das Ziel erhält nichts.
+
+**Ursachenanalyse:**
+- Prüfen, ob das Problem beim Scan-to-Email oder Scan-to-Folder liegt (unterschiedliche Ursachen)
+- Bei Scan-to-Email: SMTP-Konfiguration am Gerät prüfen, insbesondere nach Änderungen an Mailserver-Zertifikaten oder Authentifizierungsanforderungen
+- Bei Scan-to-Folder: Berechtigungen auf dem Zielordner sowie das im Gerät hinterlegte Dienstkonto prüfen
+- Prüfen, ob sich kürzlich das Passwort des im Gerät hinterlegten Kontos geändert hat
+
+**Lösungsschritte:**
+1. Testscan an eine interne, bekannt funktionierende Adresse bzw. in einen Testordner durchführen.
+2. Bei Scan-to-Email: SMTP-Einstellungen am Gerät (Server, Port, Authentifizierung) mit den aktuellen Vorgaben des Mail-Teams abgleichen.
+3. Bei Scan-to-Folder: Berechtigungen auf dem Zielordner sowie das hinterlegte Dienstkonto und dessen Passwort prüfen.
+4. Firmware des Geräts auf Aktualität prüfen, falls das Problem nach einer zentralen Änderung (z. B. TLS-Anforderung) begann.
+
+**Eskalationskriterien:**
+- Problem betrifft mehrere Geräte gleichzeitig → Hinweis auf zentrale Änderung am Mailserver oder Dienstkonto
+- Zugangsdaten des Dienstkontos sind unbekannt oder nicht mehr auffindbar
+
+**Eskalation an:** Mail-/Exchange-Team bei SMTP-Problemen, Server-Team bei Fileserver-/Berechtigungsproblemen
+
+---
+
+## 7. USB-Peripheriegeräte werden nicht erkannt
+
+**Priorität:** P3
+
+**Symptom:** Maus, Tastatur, Webcam, Docking Station oder externe Laufwerke werden nach dem Anschliessen nicht erkannt oder funktionieren nur zeitweise.
+
+**Ursachenanalyse:**
+- Prüfen, ob das Gerät an einem anderen USB-Port oder an einem anderen PC funktioniert, um zwischen Geräte- und Portdefekt zu unterscheiden
+- Geräte-Manager (`devmgmt.msc`) auf Fehler-Symbole oder unbekannte Geräte prüfen
+- Bei Docking Stations: prüfen, ob die Dockingstation selbst noch aktuelle Firmware/Treiber hat
+- Stromversorgung prüfen, insbesondere bei mehreren gleichzeitig angeschlossenen Geräten über einen USB-Hub
+
+**Lösungsschritte:**
+1. Gerät an einem anderen USB-Port testen.
+2. Im Geräte-Manager nach Fehlereinträgen suchen und betroffene Treiber deinstallieren, danach Gerät neu anschliessen.
+3. USB-Controller-Treiber über den Geräte-Manager aktualisieren.
+4. Bei Docking Stations: Firmware und Treiber vom Hersteller aktualisieren.
+5. Gerät an einem zweiten PC testen, um einen Gerätedefekt sicher auszuschliessen.
+
+**Eskalationskriterien:**
+- Gerät funktioniert an keinem PC und keinem Port → Hinweis auf Gerätedefekt
+- Mehrere USB-Geräte am selben PC gleichzeitig betroffen → Hinweis auf USB-Controller- oder Mainboard-Defekt
+
+**Eskalation an:** Hardware-Team
+
+---
+
+## 8. Bluetooth- / Wireless-Peripheriegeräte
+
+**Priorität:** P4
+
+**Symptom:** Kabellose Maus, Tastatur oder Headset verbinden sich nicht, verlieren immer wieder die Verbindung oder lassen sich gar nicht erst koppeln.
+
+**Erfahrungsbericht:** Bei Verbindungsabbrüchen lohnt sich fast immer zuerst die Frage nach dem Standort: Sitzt die Person in einem Grossraumbüro mit vielen anderen Bluetooth-Geräten in unmittelbarer Nähe, oder steht der PC in der Nähe eines WLAN-Access-Points? Beides stört das 2,4-GHz-Band und führt zu genau diesem Symptom, ohne dass am Gerät selbst etwas defekt ist. Ein einfacher Test: Gerät an einem anderen Arbeitsplatz koppeln – bleibt das Problem bestehen, liegt es am Gerät; verschwindet es, war es die Umgebung.
+
+**Ursachenanalyse:**
+- Batteriestand des Peripheriegeräts prüfen
+- Prüfen, ob andere Bluetooth-/2,4-GHz-Geräte in unmittelbarer Nähe Störungen verursachen könnten
+- Bluetooth-Treiber und Windows-Version auf Aktualität prüfen
+- Bei USB-Dongle-Geräten: Dongle an einem anderen Port testen
+
+**Lösungsschritte:**
+1. Batterie des Geräts prüfen bzw. ersetzen.
+2. Gerät im Bluetooth-Menü entfernen und neu koppeln.
+3. Bluetooth-Treiber über den Geräte-Manager aktualisieren oder neu installieren.
+4. Bei Dongle-Geräten: anderen USB-Port testen, idealerweise ohne direkt neben anderen USB-3.0-Geräten (können Störungen im 2,4-GHz-Band verursachen).
+5. Gerät testweise an einem anderen Arbeitsplatz koppeln, um Umgebungsstörungen auszuschliessen.
+
+**Eskalationskriterien:**
+- Verbindungsabbrüche bestehen auch an einem anderen Arbeitsplatz mit neuer Batterie weiter → Hinweis auf Gerätedefekt
+
+**Eskalation an:** Hardware-Team
+
+---
+
+## Remote-Support-Hinweise
+
+Bei Drucker- und Peripherieproblemen ist der Anteil an Vor-Ort-Support höher als bei reinen Software-Themen, da viele Ursachen physischer Natur sind (Papierstau, Kabel, Verbrauchsmaterial):
+
+- **Quick Assist / TeamViewer:** geeignet für alle Client-seitigen Schritte (Abschnitte 1, 2, 3, 6, 7 teilweise), z. B. Treiberinstallation, Spooler-Neustart, Portkonfiguration
+- **Vor-Ort-Support nötig, wenn:**
+  - Verbrauchsmaterial (Toner, Trommel, Papier) physisch geprüft oder ersetzt werden muss (Abschnitte 4, 5)
+  - Ein Papierstau oder eine Fehlermeldung direkt am Gerät behoben werden muss (Abschnitt 5)
+  - USB- oder Bluetooth-Hardware selbst getauscht werden muss (Abschnitte 7, 8)
+  - Das Gerät über kein erreichbares Web-Interface verfügt und lokale Konfiguration nötig ist
+
+**Faustregel:** Sobald die Ursache am Gerät selbst liegt und nicht am Client oder Netzwerk, lohnt sich meist der direkte Griff zum Vor-Ort-Support – Ferndiagnose bringt hier oft nur eine Verzögerung, bevor am Ende doch jemand vor Ort schauen muss.
+
 
 ---
 
